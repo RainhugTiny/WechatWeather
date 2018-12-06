@@ -8,6 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+use think\Route;
+
+Route::rule('weather/:citycode', 'api/weather/read');
+Route::rule('city/:countryname', 'api/city/read');
 
 return [
     '__pattern__' => [
