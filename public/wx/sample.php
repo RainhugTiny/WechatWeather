@@ -10,11 +10,14 @@ $signPackage = $jssdk->GetSignPackage();
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <!-- 引入 WeUI -->
     <link rel="stylesheet" href="http://res.wx.qq.com/open/libs/weui/0.4.3/weui.min.css"/>
+  <script  type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script  type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=zGWtqgDpHg3pBAptknTaPbNQB5k7c7In"></script>
     <title></title>
 </head>
 <body ontouchstart>
 <a href="javascript:;" onclick="openLocation()" class="weui_btn weui_btn_primary">调用地图</a>
 <a href="javascript:;" onclick="scanQRCode()" class="weui_btn weui_btn_primary">微信扫一扫</a>
+<a href="javascript:;" onclick="getWeather()" class="weui_btn weui_btn_primary">天气预报</a>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
@@ -83,6 +86,31 @@ $signPackage = $jssdk->GetSignPackage();
               }
             });
         });
+    }
+      function getWeather() {
+        var geoc = new BMap.Geocoder();
+        var lng = longitude;
+        var lat = latitude;
+        var pointArr = [];
+        var gpsPoint = new BMap.Point(lng,lat);
+        var bdPoint = new BMap.Point(0,0);
+        //回调函数，返回百度坐标位置
+        
+        translateCallback = function (point1){
+          bdPoint = point1.points[0];
+          geoc.getLocation(bdPoint,function (rs){
+            alert(rs.address);
+            //var addComp = rs.addressComponents;
+            //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+        });
+        }
+        //将GPS坐标转化为百度坐标
+        setTimeout(function(){
+          var convertor = new BMap.Convertor();
+          pointArr.push(gpsPoint);
+          convertor.translate(pointArr,1,5,translateCallback);     //真实经纬度转成百度坐标
+        }, 1000);
+        
     }
 
 </script>
